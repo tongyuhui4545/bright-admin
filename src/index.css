@@ -1,0 +1,32 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+.search-form {
+  background-color: var(--dark-bg-color);
+  padding: 20px;
+  border-radius: 5px;
+  color: #000;
+  .mr10{
+    margin-right: 10px;
+  }
+}
+.wrap-table {
+  background-color: var(--dark-bg-color);
+  border-radius: 5px;
+  color: #000;
+  margin: 10px;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px 5px 0 0;
+    color: var(--dark-color);
+    padding: 15px;
+    margin-bottom: 15px;
+    .action button {
+      margin-left: 15px;
+    }
+  }
+}
