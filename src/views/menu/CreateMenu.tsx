@@ -12,7 +12,7 @@ const CreateDept = (props: IProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deptList, setDeptList] = useState<IDept[]>([]);
   const [userList, setUserList] = useState<IUser[]>([]);
-  
+  const [] = useState();
   //use api for department list
   const getDeptList = async () => {
     const data = await api.getDeptList();

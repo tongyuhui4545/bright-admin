@@ -146,7 +146,7 @@ const Department = () => {
             type="primary"
             htmlType="submit"
             onClick={() => {
-              handleReset;
+              handleReset()
             }}
           >
             Reset

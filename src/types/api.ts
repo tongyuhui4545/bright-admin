@@ -35,7 +35,7 @@ export interface ISearchParams {
 
 //create menu params
 export interface ICreateMenuParams {
-  menuName: string; // menu name
+  menuName: string; // menu names
   menuIcon: string; // menu icon
   menuPath: string; //menu path
   menuType: number; // menu type: 1- menu, 2- button, 3- page
