@@ -125,7 +125,7 @@ const Department = () => {
 
   useEffect(() => {
     getDeptData();
-  }, []);
+  });
 
   return (
     <>

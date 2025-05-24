@@ -12,14 +12,16 @@ import {
 import type { TableColumnsType } from "antd";
 import api from "../../api";
 import { IMenu } from "../../types/api";
-// import CreateDept from "./CreateDept";
+import CreateMenu from "./CreateMenu";
 import dayjs from "dayjs";
 
 // let cocococ = dayjs("2023-10-01 12:00:00").format("YYYY-MM-DD HH:mm:ss");
 // console.log(cocococ);
 
 const Menu = () => {
-  const deptRef = useRef<{ openModal: () => void }>(null);
+  const menuRef = useRef<{
+    openModal: (type: string, data?: IMenu | { parentId: string }) => void;
+  }>(null);
   const [data, setData] = useState<IMenu[]>([]);
   const [form] = Form.useForm();
 
@@ -118,18 +120,19 @@ const Menu = () => {
 
   //add dept
   const handleCreate = () => {
-    if (deptRef.current) {
-      deptRef.current.openModal();
+    if (menuRef.current) {
+      menuRef.current.openModal("create");
     }
   };
   //add sub dept
   const handleSubCreate = (id: string) => {
-    console.log("add sub dept", id);
-    return null;
+    if (menuRef.current) {
+      menuRef.current.openModal("create", { parentId: id });
+    }
   };
   //edit dept
   const handleEdit = (record: IMenu) => {
-    console.log(record);
+    menuRef.current?.openModal("edit", record);
   };
   //delete dept
   const handleDelete = (id: string) => {
@@ -161,8 +164,7 @@ const Menu = () => {
     getMenuData();
   };
 
-  useEffect(() => { console.log('kwkwkw');
-  
+  useEffect(() => {
     getMenuData();
   }, []);
 
@@ -178,7 +180,7 @@ const Menu = () => {
             style={{ width: 100 }}
           >
             <Select.Option value={1}>Active</Select.Option>
-            <Select.Option value={2 }>Disable</Select.Option>
+            <Select.Option value={2}>Disable</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item>
@@ -203,7 +205,7 @@ const Menu = () => {
       </Form>
       <div className="wrap-table">
         <div className="header">
-          <div className="title">Department List</div>
+          <div className="title">Menu List</div>
           <div className="action">
             <Button
               onClick={() => {
@@ -214,9 +216,15 @@ const Menu = () => {
             </Button>
           </div>
         </div>
-        <Table rowKey="_id" columns={columns} dataSource={data} />
+        <Table
+          bordered
+          rowKey="_id"
+          columns={columns}
+          dataSource={data}
+          pagination={false}
+        />
       </div>
-      {/* <CreateDept mref={deptRef} update={getMenuData} /> */}
+      <CreateMenu mref={menuRef} update={getMenuData} />
     </>
   );
 };

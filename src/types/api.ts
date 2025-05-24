@@ -1,3 +1,12 @@
+export interface ResultData<T> {
+  list: T[];
+  page: {
+    total: number;
+    pageNum: number;
+    pageSize: number
+  }
+}
+
 export interface ILoginParams {
   userName: string;
   userPwd: string;
@@ -55,4 +64,48 @@ export interface IMenu extends ICreateMenuParams {
   createTime: string;
   buttons?: IMenu[];
   children?: IMenu[];
+}
+
+// pagination
+export interface IPagination {
+  pageSize: number;
+  pageNum: number;
+}
+
+//role
+export interface IRole {
+  _id: string;
+  roleName: string;
+  remark: string;
+  permissionList: {
+    checkedKeys: string[];
+    halfCheckedKeys: string[];
+  };
+  createTime: string;
+  updateTime: string;
+}
+
+export interface IRoleSearchParams extends IPagination {
+  roleName?: string;
+}
+
+export interface IRoleCreateParams {
+  roleName: string;
+  remark: string;
+  permissionList: {
+    checkedKeys: string[];
+    halfCheckedKeys: string[];
+  };
+}
+
+export interface IRoleUpdateParams extends IRoleCreateParams{
+  _id: string;
+}
+
+export interface IPermission {
+  _id: string;
+  permissionList: {
+    checkedKeys: string[];
+    halfCheckedKeys: string[];
+  };
 }
