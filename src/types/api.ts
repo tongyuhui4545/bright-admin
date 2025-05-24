@@ -63,6 +63,7 @@ export interface IMenu extends ICreateMenuParams {
   _id: string;
   createTime: string;
   buttons?: IMenu[];
+  path: string;
   children?: IMenu[];
 }
 

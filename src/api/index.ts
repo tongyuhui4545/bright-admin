@@ -1,5 +1,5 @@
 import request from "../utils/request";
-import roleApi from './roleApi'
+import roleApi from "./roleApi";
 import {
   ILoginParams,
   IDeptSearchParams,
@@ -27,6 +27,14 @@ export default {
   getAllUserList() {
     return request.get<IUser[]>("/users/all/list");
   },
+  // get permission list
+  getPermissionList() {
+    return request.get<{menuList: IMenu[], buttonList: string[]}>("/users/getPermissionList");
+  },
+
+  /* department
+   apis */
+
   //create department
   createDept(params: IDept) {
     return request.post("/dept/create", params);
@@ -53,5 +61,5 @@ export default {
   deleteMenu(params: { _id: string }) {
     return request.post("/menu/delete", params);
   },
-  ...roleApi
+  ...roleApi,
 };

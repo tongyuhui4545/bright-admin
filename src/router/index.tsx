@@ -10,9 +10,12 @@ import Department from "../views/dept";
 import Menu from "../views/menu";
 import Role from "../views/role";
 
+import AuthLoader from './AuthLoader'
+
 const router = createBrowserRouter([
   {
     element: <Layout />,
+    loader: AuthLoader,
     children: [
       { path: "/welcome", element: <Welcome /> },
       { path: "/dashboard", element: <Dashboard /> },
