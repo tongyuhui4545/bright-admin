@@ -15,11 +15,17 @@ import { IRole, IRoleSearchParams } from "../../types/api";
 import { useAntdTable } from "ahooks";
 
 import CreateRole from "./CreateRole";
+import SetPermission from "./SetPermission";
 
 const Role = () => {
   const roleRef = useRef<{
     openModal: (type: string, data?: IRole | { parentId: string }) => void;
   }>(null);
+
+  const permissionRef = useRef<{
+    openModal: (type: string, data?: IRole) => void;
+  }>(null);
+
   const [form] = Form.useForm();
   const columns: TableColumnsType<IRole> = [
     { title: "Role Name", dataIndex: "roleName", key: "roleName" },
@@ -80,16 +86,15 @@ const Role = () => {
 
   //functions
   const handleCreate = () => {
-    roleRef.current?.openModal('create');
+    roleRef.current?.openModal("create");
   };
   const handleSetPermission = (record: IRole) => {
-    return record;
+    permissionRef.current?.openModal("setPermission", record);
   };
   const handleEdit = (record: IRole) => {
-    console.log('hssks', record);
-    
-    roleRef.current?.openModal('edit', record)};
-  const handleDelete = (id: string) => { 
+    roleRef.current?.openModal("edit", record);
+  };
+  const handleDelete = (id: string) => {
     Modal.confirm({
       title: "Delete the role",
       content: "Are you sure you want to delete the role?",
@@ -148,7 +153,10 @@ const Role = () => {
         </div>
         <Table columns={columns} {...tableProps}></Table>
       </div>
+      {/* Create Role Modal */}
       <CreateRole mref={roleRef} update={search.submit} />
+      {/* Set Permission Modal */}
+      <SetPermission mref={permissionRef} update={search.submit} />
     </div>
   );
 };

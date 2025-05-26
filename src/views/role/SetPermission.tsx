@@ -1,50 +1,73 @@
-import { Modal, Form, Tree, message } from "antd";
-import { useState, RefObject, useImperativeHandle } from "react";
-import { IRole, IMenu } from "../../types/api";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Modal, Form, Tree, message, TreeProps, TreeDataNode, DataNode } from "antd";
+import { useState, RefObject, useImperativeHandle, useEffect } from "react";
+import { IRole, IMenu, IPermission } from "../../types/api";
 import api from "../../api";
 
 interface IProps {
   mref: RefObject<{
-    openModal: (type: string, data?: IRole | { parentId: string }) => void;
+    openModal: (type: string, data?: IRole) => void;
   } | null>;
   update: () => void;
 }
 
 const CreateRole = (props: IProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [action, setAction] = useState<string>("create");
 
-  const [checkedKeys, setCheckedKeys] = useState<string>([]);
+  const [roleInfo, setRoleInfo] = useState<IRole>();
+
+  const [checkedKeys, setCheckedKeys] = useState<string[]>([]);
+  const [permission, setPermission] = useState<IPermission>();
   const [menuList, setMenuList] = useState<IMenu[]>([]);
 
   const [form] = Form.useForm();
 
-  const handleOk = async () => {
-    const valid = await form.validateFields();
-    if (!valid) return;
-    if (action === "create") {
-      await api.createRole(form.getFieldsValue());
-      message.success("Role created successfully!");
-    } else if (action === "edit") {
-      await api.updateRole(form.getFieldsValue());
-      message.success("Role updated successfully!");
-    }
-    handleCancel();
-    //refresh the department list
-    props.update();
+  useEffect(() => {
+    getMenuList();
+  }, []);
+
+  const getMenuList = async () => {
+    const data = await api.getMenuList();
+    console.log('mmmmm', data);
+    setMenuList(data);
   };
-  const openModal = (type: string, data?: IRole | { parentId: string }) => {
-    if (type === "create") {
+
+  const handleOk = async () => {
+    if(permission) {
+      await api.updatePermission(permission);
+      message.success('Update successfully');
+    }
+  };
+  const openModal = (type: string, data?: IRole) => {
+    setRoleInfo(data);
+    if(type === 'setPermission') {
+      setCheckedKeys(data?.permissionList.checkedKeys || [])
       setIsModalOpen(true);
-    } else if (type === "edit") {
-      setIsModalOpen(true);
-      setAction("edit");
-      form.setFieldsValue(data as IRole);
     }
   };
   const handleCancel = () => {
     setIsModalOpen(false);
     form.resetFields();
+  };
+
+  const onCheck: TreeProps["onCheck"] = (checkedKeys: any, info: any) => {
+    console.log("onCheck", checkedKeys, info);
+      const checkedKeysTemp: string[] = [];
+      const halfCheckedKeysTemp: string[] = [];
+    info.checkedNodes.map((node: DataNode ) => {
+      if(node.menuType === 2) {
+        checkedKeysTemp.push(node._id);
+      } else {
+        halfCheckedKeysTemp.push(node.parentId);
+      }
+    })
+    setPermission({
+      _id: roleInfo?._id || '',
+      permissionList: {
+        checkedKeys: checkedKeysTemp,
+        halfCheckedKeys: halfCheckedKeysTemp.concat(...info.halfCheckedKeys)
+      }
+    })
   };
 
   useImperativeHandle(props.mref, () => ({ openModal }));
@@ -59,14 +82,19 @@ const CreateRole = (props: IProps) => {
       >
         <Form form={form} labelAlign="right" labelCol={{ span: 4 }}>
           {/* Role name */}
-          <Form.Item label="Role Name " name="roleName"></Form.Item>
-          <Form.Item label="Permission" name="permission">
+          <Form.Item label="Role Name "></Form.Item>
+          <Form.Item label="Permission">
             <Tree
               checkable
               defaultExpandAll
               defaultCheckedKeys={checkedKeys}
               onCheck={onCheck}
-              treeData={treeData}
+              fieldNames={{
+                title: "menuName",
+                key: "_id",
+                children: "children",
+              }}
+              treeData={menuList as unknown as TreeDataNode[]}
             />
           </Form.Item>
         </Form>
