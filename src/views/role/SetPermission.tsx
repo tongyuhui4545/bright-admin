@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Modal, Form, Tree, message, TreeProps, TreeDataNode, DataNode } from "antd";
+import { Modal, Form, Tree, message, TreeProps, TreeDataNode } from "antd";
 import { useState, RefObject, useImperativeHandle, useEffect } from "react";
 import { IRole, IMenu, IPermission } from "../../types/api";
 import api from "../../api";
@@ -51,10 +51,10 @@ const CreateRole = (props: IProps) => {
   };
 
   const onCheck: TreeProps["onCheck"] = (checkedKeys: any, info: any) => {
-    console.log("onCheck", checkedKeys, info);
+      setCheckedKeys(checkedKeys);
       const checkedKeysTemp: string[] = [];
       const halfCheckedKeysTemp: string[] = [];
-    info.checkedNodes.map((node: DataNode ) => {
+    info.checkedNodes.map((node: IMenu ) => {
       if(node.menuType === 2) {
         checkedKeysTemp.push(node._id);
       } else {
