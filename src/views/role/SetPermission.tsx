@@ -58,7 +58,7 @@ const CreateRole = (props: IProps) => {
       if(node.menuType === 2) {
         checkedKeysTemp.push(node._id);
       } else {
-        halfCheckedKeysTemp.push(node.parentId);
+        halfCheckedKeysTemp.push(node._id);
       }
     })
     setPermission({
