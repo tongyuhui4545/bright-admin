@@ -3,7 +3,7 @@ import {
   IRoleSearchParams,
   IRoleCreateParams,
   IPermission,
-  IRoleUpdateParams,
+  IRoleEditParams,
   ResultData,
   IRole
 } from "../types/api";
@@ -27,7 +27,12 @@ export default {
   },
 
   //update role
-  updateRole(params: IRoleUpdateParams) {
+  updateRole(params: IRoleEditParams) {
     return request.post("/roles/edit", params);
   },
+
+      // 获取所有角色列表
+    getAllRoleList() {
+        return request.get<IRole[]>('/roles/allList');
+    },
 };

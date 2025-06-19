@@ -18,6 +18,7 @@ const CreateRole = (props: IProps) => {
 
   const [checkedKeys, setCheckedKeys] = useState<string[]>([]);
   const [permission, setPermission] = useState<IPermission>();
+
   const [menuList, setMenuList] = useState<IMenu[]>([]);
 
   const [form] = Form.useForm();
@@ -28,13 +29,13 @@ const CreateRole = (props: IProps) => {
 
   const getMenuList = async () => {
     const data = await api.getMenuList();
-    console.log('mmmmm', data);
     setMenuList(data);
   };
 
   const handleOk = async () => {
     if(permission) {
       await api.updatePermission(permission);
+      handleCancel();
       message.success('Update successfully');
     }
   };

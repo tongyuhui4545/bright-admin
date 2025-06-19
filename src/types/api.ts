@@ -1,112 +1,179 @@
 export interface ResultData<T> {
-  list: T[];
-  page: {
-    total: number;
-    pageNum: number;
-    pageSize: number
-  }
+    list: T[];
+    page: {
+        total: number | 0;
+        pageNum: number;
+        pageSzie: number;
+    };
 }
 
+// 登录模块
 export interface ILoginParams {
-  userName: string;
-  userPwd: string;
+    username: string;
+    userPwd: string;
 }
 
+// 部门模块
 export interface IDeptSearchParams {
-  deptName: string;
+    deptName?: string;
 }
-
 export interface IDept {
-  _id: string;
-  createTime: string;
-  updateTime: string;
-  detpName: string;
-  parentId: string;
-  userName: string;
-  children: IDept[];
+    _id: string;
+    createTime: string;
+    updateTime: string;
+    deptName: string;
+    parentId: string;
+    userName: string;
+    children: IDept[];
 }
 
-//user
+// 用户模块
 export interface IUser {
-  _id: string;
-  userName: string;
-  userPwd: string;
-  deptId: string;
-  roleId: string;
-  children: IUser[];
+    _id: string;
+    userId: number;
+    userName: string;
+    userEmail: string;
+    deptId: string;
+    state: number;
+    mobile: string;
+    job: string;
+    role: number;
+    roleList: string;
+    createId: number;
+    deptName: string;
+    userImg: string;
 }
 
-//search params
-export interface ISearchParams {
-  menuName: string;
-  menuState: number;
-}
+// 菜单模块
 
-//create menu params
+// 创建菜单参数
 export interface ICreateMenuParams {
-  menuName: string; // menu names
-  menuIcon: string; // menu icon
-  menuPath: string; //menu path
-  menuType: number; // menu type: 1- menu, 2- button, 3- page
-  menuCode: string; // menu permissions
-  menuStatus: number; // 1- active, 2- disabled, 3- deleted
-  parentId: string;
+    menuName: string; // 菜单名称
+    icon?: string; // 菜单图标
+    path: string; // 菜单路径
+    menuType: number; // 菜单类型 1:菜单 2:按钮 3:页面
+    menuCode: string; // 菜单权限标示
+    parentId: string; // 父级菜单id
+    component: string; // 组件名称
+    menuStatus: number; // 菜单状态 1:启用 2:禁用
 }
-
-//update menu params
+// 更新菜单参数
 export interface IUpdateMenuParams extends ICreateMenuParams {
-  _id: string;
+    _id: string;
 }
-
-//menu
+// 菜单list
 export interface IMenu extends ICreateMenuParams {
-  _id: string;
-  createTime: string;
-  buttons?: IMenu[];
-  path: string;
-  children?: IMenu[];
+    _id: string;
+    createTime: string;
+    buttons?: IMenu[];
+    children?: IMenu[];
 }
 
-// pagination
-export interface IPagination {
-  pageSize: number;
-  pageNum: number;
+// 搜索参数
+export interface ISearchParams {
+    menuName: string;
+    menuState: number;
 }
 
-//role
+export interface IPageParams {
+    pageNum: number;
+    pageSize?: number;
+}
+
+// 角色模块
 export interface IRole {
-  _id: string;
-  roleName: string;
-  remark: string;
-  permissionList: {
-    checkedKeys: string[];
-    halfCheckedKeys: string[];
-  };
-  createTime: string;
-  updateTime: string;
+    _id: string;
+    roleName: string;
+    remark: string;
+    permissionList: {
+        checkedKeys: string[];
+        halfCheckedKeys: string[];
+    };
+    createTime: string;
+    updateTime: string;
 }
-
-export interface IRoleSearchParams extends IPagination {
-  roleName?: string;
+export interface IRoleSearchParams extends IPageParams {
+    roleName?: string;
 }
-
 export interface IRoleCreateParams {
-  roleName: string;
-  remark: string;
-  permissionList: {
-    checkedKeys: string[];
-    halfCheckedKeys: string[];
-  };
+    roleName: string;
+    remark: string;
 }
 
-export interface IRoleUpdateParams extends IRoleCreateParams{
-  _id: string;
+export interface IRoleEditParams extends IRoleCreateParams {
+    _id: string;
 }
-
 export interface IPermission {
-  _id: string;
-  permissionList: {
-    checkedKeys: string[];
-    halfCheckedKeys: string[];
-  };
+    _id: string;
+    permissionList: {
+        checkedKeys: string[];
+        halfCheckedKeys: string[];
+    };
+}
+
+// 用户模块
+
+// 用户搜索参数
+export interface IUserSearchParams extends IPageParams {
+    userId?: number;
+    userName?: string;
+    state?: number;
+}
+// 用户列表
+export interface IUser {
+    _id: string;
+    userId: number;
+    userName: string;
+    userEmail: string;
+    deptId: string;
+    state: number;
+    mobile: string;
+    job: string;
+    role: number;
+    roleList: string;
+    createId: number;
+    deptName: string;
+    userImg: string;
+}
+// 创建用户参数
+export interface ICreateUserParams {
+    userName: string;
+    userEmail: string;
+    mobile?: number;
+    deptId: string;
+    job?: string;
+    state?: number;
+    roleList: string[];
+    userImg: string;
+}
+// 更新用户参数
+export interface IUpdateUserParams extends ICreateUserParams {
+    userId: string;
+}
+
+
+// dashboard 模块
+
+export interface IReportData {
+    codeLine: number;
+    salary: number;
+    icafeCount: number;
+    projectNum: number;
+}
+
+export interface ILineData {
+    label: string[];
+    order: number[];
+    money: number[];
+}
+export interface IPieData {
+    value: number;
+    name: string;
+}
+export interface IRadarData {
+    indicator: Array<{ name: string; max: number }>;
+    data: {
+        value: number[];
+        name: string;
+    }
 }
